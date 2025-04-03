@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "bin",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": true,
+    "skipLibCheck": true,
+    "allowUnreachableCode": true,
+    "lib": [
+      "ES2022"
+    ],
+    "types": [
+      "node"
+    ],
+    "target": "ES2022",
+    "composite": false,
+    "sourceMap": true,
+    "declaration": true, /* Set to true if you want to generate declaration files (.d.ts) */
+    "declarationMap": false, /* Set to true to generate sourcemap files for d.ts files */
+    "strict": true,
+    "noImplicitAny": false,
+    "strictNullChecks": true,
+    "noImplicitOverride": true,
+    "useUnknownInCatchVariables": false,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictFunctionTypes": true,
+  },
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "<node_internals>/**",
+  ],
+  "ts-node": {
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
+    "esm": true,
+  },
+}
