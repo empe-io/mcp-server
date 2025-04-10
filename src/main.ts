@@ -20,4 +20,4 @@ server.start({
         endpoint: "/sse",
         port: SSE_PORT,
     },
-}).then(() => {});
+}).catch((err) => console.error(err));

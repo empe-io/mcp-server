@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { FastMCP } from 'fastmcp';
 import { z } from 'zod';
 import { EventSource } from 'eventsource';
-import { CLIENT_SECRET, VERIFIER_BASE_URL, VERIFIER_BASE_URL_LOCAL, VERIFIER_SERVICE_URL } from './verifier';
+import { VERIFIER_CLIENT_URL, VERIFIER_SERVICE_API_KEY, VERIFIER_SERVICE_URL } from './verifier';
 import { fromEvent, merge, Observable, Subject } from 'rxjs';
 import { filter, map, take, takeUntil } from 'rxjs/operators';
 
@@ -14,7 +14,6 @@ export const server = new FastMCP({
     name: "Verification Server",
     version: "1.0.0",
 });
-
 interface VerificationData {
     status: "pending" | "completed" | "error";
     endpoint: string;
@@ -120,9 +119,9 @@ server.addTool({
     }),
     execute: async (args) => {
         try {
-            const response = await fetch(VERIFIER_BASE_URL + `/api/verifier/${args.endpoint}/v1/authorize-qr-code`, {
+            const response = await fetch(VERIFIER_CLIENT_URL + `/api/verifier/${args.endpoint}/v1/authorize-qr-code`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json', 'x-client-secret': CLIENT_SECRET}
+                headers: { 'Content-Type': 'application/json', 'x-client-secret': VERIFIER_SERVICE_API_KEY },
             });
 
             if (!response.ok) {
@@ -133,7 +132,7 @@ server.addTool({
             const state = data.state;
 
             const eventSource = new EventSource(
-                `${VERIFIER_BASE_URL_LOCAL}/api/verifier/${args.endpoint}/v1/connection/${state}`
+                `${VERIFIER_CLIENT_URL}/api/verifier/${args.endpoint}/v1/connection/${state}`,
             );
 
             const initialData: VerificationData = {
@@ -177,11 +176,11 @@ server.addTool({
     }),
     execute: async (args) => {
         try {
-            const response = await fetch(VERIFIER_BASE_URL + `/api/verifier/vp-query/v1/authorize-qr-code`, {
+            const response = await fetch(VERIFIER_CLIENT_URL + `/api/verifier/vp-query/v1/authorize-qr-code`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-client-secret': CLIENT_SECRET
+                    'x-client-secret': VERIFIER_SERVICE_API_KEY,
                 },
                 body: JSON.stringify({
                     vp_query_id: args.vpQueryId
@@ -196,7 +195,7 @@ server.addTool({
             const state = data.state;
 
             const eventSource = new EventSource(
-                `${VERIFIER_BASE_URL_LOCAL}/api/verifier/vp-query/v1/connection/${state}`
+                `${VERIFIER_CLIENT_URL}/api/verifier/vp-query/v1/connection/${state}`,
             );
 
             const initialData: VerificationData = {
@@ -342,7 +341,19 @@ async function callIssuerAPI(endpoint: string, method: string, body: Record<stri
 
 server.addTool({
     name: "create_schema",
-    description: "Create a new credential schema. Schemas define the structure and attributes of Verifiable Credentials in the SSI ecosystem. Each schema has a type, name, and defines the properties a credential can contain.",
+    description: 'Create a new credential schema. Schemas define the structure and attributes of Verifiable Credentials in the SSI ecosystem. Each schema has a type, name, and defines the properties a credential can contain. here is an example: {\n' +
+        '  "name": "ProofOfPurchase",\n' +
+        '  "type": "ProofOfPurchase",\n' +
+        '  "credentialSubject": {\n' +
+        '    "type": "object",\n' +
+        '    "properties": {\n' +
+        '      "ticket": {"type": "string", "title": "Ticket"},\n' +
+        '      "seat": {"type": "string", "title": "Seat"},\n' +
+        '      "description": {"type": "string", "title": "Description"}\n' +
+        '    },\n' +
+        '    "required": ["ticket", "seat", "description"]\n' +
+        '  }\n' +
+        '}',
     parameters: z.object({
         name: z.string().describe("Human-readable name of the schema (e.g., 'ProofOfPurchase', 'IdentityCredential', 'EventTicket'). This should be clear and descriptive."),
         type: z.string().describe("Unique identifier for this schema type. Often matches the name but serves as the technical reference. Used when creating credential offerings."),
@@ -715,7 +726,7 @@ async function callVerifierServiceAPI(endpoint: string, method: string, body: Re
     try {
         const headers: Record<string, string> = {
             'Content-Type': 'application/json',
-            'x-client-secret': CLIENT_SECRET
+            'x-client-secret': VERIFIER_SERVICE_API_KEY,
         };
 
         const options: RequestInit = {
