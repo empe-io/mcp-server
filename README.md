@@ -85,15 +85,20 @@ ecosystem.
 ### Creating and Issuing Event Tickets
 
 ```
-I want to create digital tickets for my tech conference. Can you help me create a schema for event tickets and then issue a sample ticket?
+I want to create digital tickets for my tech conference. Can you help me create a schema 
+for event tickets and then issue a sample ticket?
 ```
 
 ```
-Please create a credential schema for concert tickets with fields for the event name, date, seat number, and ticket ID. Then issue a sample ticket for the "Summer Jazz Festival" on July 15, 2023.
+Please create a credential schema for concert tickets with fields for the event name, 
+date, seat number, and ticket ID. Then issue a sample ticket for the "Summer Jazz 
+Festival" on July 15, 2023.
 ```
 
 ```
-I need to issue a digital membership card for my gym. The membership should include the member's name, membership level (Gold, Silver, Bronze), and expiration date. Can you create this for me?
+I need to issue a digital membership card for my gym. The membership should include the
+member's name, membership level (Gold, Silver, Bronze), and expiration date. Can you 
+create this for me?
 ```
 
 ### Managing Schemas
@@ -115,11 +120,13 @@ Get me the details of the most recent version of the "MembershipCard" schema.
 ### Simple Verification
 
 ```
-I need to verify attendees at my event entrance. Can you generate a QR code that I can scan with my phone to verify their tickets?
+I need to verify attendees at my event entrance. Can you generate a QR code that I can
+scan with my phone to verify their tickets?
 ```
 
 ```
-Generate a verification QR code for the fairdrop endpoint and let me know when someone scans it.
+Generate a verification QR code for the fairdrop endpoint and let me know when someone
+scans it.
 ```
 
 ### Advanced Verification with VP Queries
@@ -129,18 +136,23 @@ example command first to
 generate offering and then to verify it.
 
 ```
-Please generate for me schema and credential offering with type EventTicket where the event name is "Annual Developer Conference".
-I need to verify that people have a valid EventTicket credential where the event name is "Annual Developer Conference".
+Please generate for me schema and credential offering with type EventTicket where the
+event name is "Annual Developer Conference".
+
+I need to verify that people have a valid EventTicket credential where the event name
+is "Annual Developer Conference".
 ```
 
 Below are some more advanced verification prompts:
 
 ```
-Create a verification process that checks if someone has a MembershipCard credential with a "Gold" membership level and that hasn't expired yet.
+Create a verification process that checks if someone has a MembershipCard credential with
+a "Gold" membership level and that hasn't expired yet.
 ```
 
 ```
-I want to verify that someone has either a government ID showing they're over 21 OR a driver's license with class A, B, or C. Can you set up this verification?
+I want to verify that someone has either a government ID showing they're over 21 OR a driver'
+s license with class A, B, or C. Can you set up this verification?
 ```
 
 ### Managing VP Queries
